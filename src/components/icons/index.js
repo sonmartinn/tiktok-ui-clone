@@ -43,7 +43,7 @@ export const InboxIcon = ({ width = '3.2rem', height = '3.2rem', className }) =>
     </svg>
 );
 
-export const SearchIcon = ({ width = '3.2rem', height = '3.2rem', className }) => (
+export const SearchIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
     <svg
         className={className}
         fill="currentColor"
