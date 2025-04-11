@@ -7,6 +7,7 @@ import classNames from 'classnames/bind';
 import { wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/icons';
+import { useDebounce } from '~/hooks';
 import styles from './Search.module.scss';
 
 const cx = classNames.bind(styles);
@@ -17,17 +18,19 @@ function Search() {
     const [showResult, setShowResult] = useState(true);
     const [loading, setLoading] = useState(false);
 
+    const debounced = useDebounce(searchValue, 500);
+
     const inputRef = useRef();
 
     useEffect(() => {
-        if (!searchValue.trim()) {
+        if (!debounced.trim()) {
             setSearchResult([]);
             return;
         }
 
         setLoading(true);
 
-        fetch(`https://dummyjson.com/users/search?q=${encodeURIComponent(searchValue)}&limit=5`)
+        fetch(`https://dummyjson.com/users/search?q=${encodeURIComponent(debounced)}&limit=5`)
             .then((res) => res.json())
             .then((res) => {
                 setSearchResult(res.users);
@@ -36,7 +39,7 @@ function Search() {
             .catch(() => {
                 setLoading(false);
             });
-    }, [searchValue]);
+    }, [debounced]);
 
     const handleClear = () => {
         setSearchValue('');
